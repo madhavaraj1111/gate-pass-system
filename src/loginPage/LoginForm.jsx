@@ -79,15 +79,7 @@ const LoginForm = () => {
             }`}
             {...register("password", {
               required: "Password is required",
-              minLength: {
-                value: 8,
-                message: "Password must be at least 8 characters long",
-              },
-              pattern: {
-                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/,
-                message:
-                  "Password must contain one uppercase, one lowercase, and one number",
-              },
+              
             })}
           />
           {errors.password && (

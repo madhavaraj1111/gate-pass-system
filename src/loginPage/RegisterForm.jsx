@@ -54,7 +54,7 @@ const RegisterForm = () => {
                 })}
               />
               {errors.Username && (
-                <p className="mt-1 text-sm text-red-500">
+                <p className="mt-1 text-xs text-red-500">
                   {errors.Username.message}
                 </p>
               )}
@@ -79,7 +79,7 @@ const RegisterForm = () => {
                 })}
               />
               {errors.Email && (
-                <p className="mt-1 text-sm text-red-500">
+                <p className="mt-1 text-xs text-red-500">
                   {errors.Email.message}
                 </p>
               )}
@@ -110,7 +110,7 @@ const RegisterForm = () => {
                 })}
               />
               {errors.password && (
-                <p className="mt-1 text-sm text-red-500">
+                <p className="mt-1 text-xs text-red-500">
                   {errors.password.message}
                 </p>
               )}
@@ -133,7 +133,7 @@ const RegisterForm = () => {
                 })}
               />
               {errors.confirmPassword && (
-                <p className="mt-1 text-sm text-red-500">
+                <p className="mt-1 text-xs text-red-500">
                   {errors.confirmPassword.message}
                 </p>
               )}
