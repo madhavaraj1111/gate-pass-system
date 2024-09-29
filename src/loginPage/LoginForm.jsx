@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 
 const LoginForm = () => {
-  
   const [rememberMe, setRememberMe] = useState(false);
 
   const {
@@ -12,45 +11,41 @@ const LoginForm = () => {
     handleSubmit,
     formState: { errors },
     reset,
-    setValue,  
+    setValue,
   } = useForm();
 
-  
   useEffect(() => {
     const savedUsername = localStorage.getItem("rememberedUsername");
     if (savedUsername) {
-      setValue("Username", savedUsername); 
-      setRememberMe(true); 
+      setValue("Username", savedUsername);
+      setRememberMe(true);
     }
-  }, [setValue]); 
+  }, [setValue]);
 
-  
   const onSubmission = (data) => {
     console.log(data);
 
-    
     if (rememberMe) {
       localStorage.setItem("rememberedUsername", data.Username);
     } else {
-      
       localStorage.removeItem("rememberedUsername");
     }
 
-    reset(); 
+    reset();
   };
 
   return (
-    <div className="max-w-sm mx-auto">
-      <h1 className="text-2xl text-white font-bold text-center mb-6">Login</h1>
+    <div className="mx-auto max-w-sm">
+      <h1 className="mb-6 text-center text-2xl font-bold text-white">Login</h1>
       <form className="space-y-6" onSubmit={handleSubmit(onSubmission)}>
         {/* Username Field */}
         <div className="relative">
-          <FaUser className="absolute text-white m-3" />
+          <FaUser className="absolute m-3 text-white" />
           <input
             type="text"
             id="Username"
             placeholder="Username"
-            className={`w-full pl-10 pr-4 py-2 rounded-lg bg-white bg-opacity-20 text-white placeholder-white outline-none ${
+            className={`w-full rounded-lg bg-white bg-opacity-20 py-2 pl-10 pr-4 text-white placeholder-white outline-none ${
               errors.Username ? "border-red-500" : ""
             }`}
             {...register("Username", {
@@ -66,18 +61,20 @@ const LoginForm = () => {
             })}
           />
           {errors.Username && (
-            <p className="text-red-500 text-sm mt-1">{errors.Username.message}</p>
+            <p className="mt-1 text-sm text-red-500">
+              {errors.Username.message}
+            </p>
           )}
         </div>
 
         {/* Password Field */}
         <div className="relative">
-          <FaLock className="absolute text-white m-3" />
+          <FaLock className="absolute m-3 text-white" />
           <input
             type="password"
             id="password"
             placeholder="Password"
-            className={`w-full pl-10 pr-4 py-2 rounded-lg bg-white bg-opacity-20 text-white placeholder-white outline-none ${
+            className={`w-full rounded-lg bg-white bg-opacity-20 py-2 pl-10 pr-4 text-white placeholder-white outline-none ${
               errors.password ? "border-red-500" : ""
             }`}
             {...register("password", {
@@ -94,18 +91,20 @@ const LoginForm = () => {
             })}
           />
           {errors.password && (
-            <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+            <p className="mt-1 text-sm text-red-500">
+              {errors.password.message}
+            </p>
           )}
         </div>
 
         {/* Remember Me & Forgot Password */}
-        <div className="flex justify-between items-center text-white gap-7 sm:gap-10">
+        <div className="flex items-center justify-between gap-7 text-white sm:gap-10">
           <label className="flex items-center max-sm:text-sm">
             <input
               type="checkbox"
               className="mr-2"
-              checked={rememberMe} 
-              onChange={(e) => setRememberMe(e.target.checked)} 
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
             />
             Remember me
           </label>
@@ -120,14 +119,14 @@ const LoginForm = () => {
 
         {/* Login Button */}
         <button
-          className="text-white bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-400/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-[15px] w-full transition-all duration-1000 px-5 py-2 text-center mr-2 mb-2"
+          className="mb-2 mr-2 w-full rounded-lg bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 px-5 py-2 text-center text-[15px] font-medium text-white shadow-lg shadow-blue-400/50 transition-all duration-1000 hover:bg-gradient-to-br focus:outline-none focus:ring-4 focus:ring-blue-300 dark:shadow-lg dark:shadow-blue-800/80 dark:focus:ring-blue-800"
           type="submit"
         >
           Login
         </button>
 
         {/* Register Link */}
-        <div className="text-center text-white mt-4 max-sm:text-sm">
+        <div className="mt-4 text-center text-white max-sm:text-sm">
           Don&apos;t have an account?{" "}
           <Link
             to="/gate-pass-system/register"
