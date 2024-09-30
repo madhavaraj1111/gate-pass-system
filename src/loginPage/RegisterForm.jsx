@@ -2,23 +2,30 @@ import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import background from "./assets/background.jpg";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const RegisterForm = () => {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-    reset,
-  } = useForm();
+  const { register, handleSubmit, formState: { errors }, reset, watch } = useForm();
+  const [registerState, setRegisterState] = useState(null);
+  
+  const password = watch("password"); // Watching the password field
 
   const onSubmission = (data) => {
-    console.log(data);
-    reset();
+    const existingUsers = JSON.parse(localStorage.getItem("registeredUsers")) || [];
+    
+    // Check if email already exists
+    const userExists = existingUsers.some(user => user.Email === data.Email);
+    
+    if (userExists) {
+      alert("This email is already registered.");
+      reset();
+    } else {
+      const updatedUsers = [...existingUsers, data];
+      localStorage.setItem("registeredUsers", JSON.stringify(updatedUsers));
+      alert("Registration successful!");
+      reset();
+    }
   };
-
-  // Watch password field to match it with confirm password
-  const password = watch("password");
 
   return (
     <div
@@ -90,7 +97,7 @@ const RegisterForm = () => {
               <FaLock className="absolute m-3 text-white" />
               <input
                 type="password"
-                id="password"
+                id="Password"
                 placeholder="Password"
                 className={`w-full rounded-lg bg-white bg-opacity-20 py-2 pl-10 pr-4 text-white placeholder-white outline-none ${
                   errors.password ? "border-red-500" : ""

@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 
 const LoginForm = () => {
   const [rememberMe, setRememberMe] = useState(false);
+  const [loginError, setLoginError] = useState(null);
 
   const {
     register,
@@ -23,21 +24,36 @@ const LoginForm = () => {
   }, [setValue]);
 
   const onSubmission = (data) => {
-    console.log(data);
+    // Get the list of registered users from localStorage
+    const existingUsers = JSON.parse(localStorage.getItem("registeredUsers")) || [];
 
-    if (rememberMe) {
-      localStorage.setItem("rememberedUsername", data.Username);
+    // Check if the user is registered
+    const user = existingUsers.find(
+      user => user.Username === data.Username && user.password === data.password
+    );
+
+    if (user) {
+      // Successful login
+      setLoginError(null);
+      alert("Login successful!");
+      if (rememberMe) {
+        localStorage.setItem("rememberedUsername", data.Username);
+      } else {
+        localStorage.removeItem("rememberedUsername");
+      }
+      reset();
     } else {
-      localStorage.removeItem("rememberedUsername");
+      // Login failed: user not registered or incorrect details
+      setLoginError("Invalid username or password. Please try again or register.");
+      reset();
     }
-
-    reset();
   };
 
   return (
     <div className="mx-auto max-w-sm">
       <h1 className="mb-6 text-center text-2xl font-bold text-white">Login</h1>
       <form className="space-y-6" onSubmit={handleSubmit(onSubmission)}>
+        
         {/* Username Field */}
         <div className="relative">
           <FaUser className="absolute m-3 text-white" />
@@ -79,7 +95,10 @@ const LoginForm = () => {
             }`}
             {...register("password", {
               required: "Password is required",
-              
+              minLength: {
+                value: 8,
+                message: "Password must be at least 8 characters long",
+              },
             })}
           />
           {errors.password && (
@@ -109,6 +128,13 @@ const LoginForm = () => {
           </Link>
         </div>
 
+        {/* Error Message */}
+        {loginError && (
+          <p className="mt-2 text-sm text-red-500">
+            {loginError}
+          </p>
+        )}
+
         {/* Login Button */}
         <button
           className="mb-2 mr-2 w-full rounded-lg bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 px-5 py-2 text-center text-[15px] font-medium text-white shadow-lg shadow-blue-400/50 transition-all duration-1000 hover:bg-gradient-to-br focus:outline-none focus:ring-4 focus:ring-blue-300 dark:shadow-lg dark:shadow-blue-800/80 dark:focus:ring-blue-800"
@@ -133,3 +159,4 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
+
